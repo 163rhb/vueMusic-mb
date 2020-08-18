@@ -60,11 +60,13 @@
         </div>
       </div>
     </transition>
+    <!---->
     <transition name="mini">
       <div class="mini-player" v-show="!fullScreen" @click="open">
         <div class="icon">
           <img :src="currentSong.img" :class="rotateState" />
         </div>
+        <!--<div>{{currentSong}}</div>-->
         <div class="text">
           <h3 v-html="currentSong.songname"></h3>
           <p v-html="currentSong.singername"></p>
@@ -78,6 +80,7 @@
           <i class="iconfont icon-liebiao3"></i>
         </div>
         <play-list ref="playlist"></play-list>
+
       </div>
     </transition>
     <audio
@@ -146,6 +149,7 @@ export default {
     }
   },
   watch: {
+
     currentSong(newSong, oldSong) {
       //切换mode时防止歌曲变化
       if (newSong.id === oldSong.id) {
@@ -156,6 +160,7 @@ export default {
       });
     },
     playing(newState, oldState) {
+
       if (!newState) {
         this.$nextTick(() => {
           this.$refs.audio.pause();
@@ -254,11 +259,13 @@ export default {
           key: "mylikeSongs",
           index: idx
         });
+        Toast('取消喜欢')
       } else {
         this.addItem({
           key: "mylikeSongs",
           song: song
         });
+        Toast('添加喜欢!')
       }
     },
     ready() {
@@ -339,6 +346,10 @@ export default {
       }
       this.resetCurrentIndex(list);
       this.setPlaylist(list);
+      Toast({
+        message:"更改成功",
+        position:'bottom'},
+      )
     },
     resetCurrentIndex(list) {
       let index = list.findIndex(item => {

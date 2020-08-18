@@ -31,10 +31,9 @@
 				</ul>
 			</div>
 			<div class="search-suggestion" v-show="value" ref="suggestion">
-				<mt-loadmore 
-				:bottom-method="loadBottom" 
+				<mt-loadmore
+				:bottom-method="loadBottom"
 				:bottom-all-loaded="allLoaded"
-				@bottom-status-change="test" 
 				ref="loadmore">
 					<ul>
 						<li v-for="(item,index) in suggestionList" :key="index" @click="addSearchHistory(item,item.type)">
@@ -102,7 +101,7 @@
 						Object.assign(song,createSong(item))
 						this.suggestionList.push(song)
 					})
-				
+
 				})
 			}
 		},
@@ -138,7 +137,7 @@
 					if (!data.song.list.length) {
 						this.allLoaded = true
 						this.$refs.suggestion.style.paddingBottom = 80+'px'
-						return 
+						return
 					}
 					data.song.list.forEach((item)=>{
 						let song = {
@@ -158,19 +157,19 @@
 			getContent(item,tag){
 				//此函数是获取不同类型搜索建议的内容
 				switch (item.type) {
-					// case 2 : 
+					// case 2 :
 					// 	if (tag === 'h3') {
 					// 		return item.singername
 					// 	}else {
 					// 		return `单曲：${item.songnum} 专辑：${item.albumname}`
 					// 	}
-					case 3 : 
+					case 3 :
 						if (tag === 'h3') {
 							return item.albumname
 						}else {
 							return item.singername
 						}
-					default : 
+					default :
 						if (tag === 'h3') {
 							return item.songname
 						}else {

@@ -24,7 +24,7 @@
 	import getSingerlistData from '@/api/getSingerlistData.js'
 	import Loading from '@/components/Loading'
 
-	const HOT_NAME="热"   
+	const HOT_NAME="热"
 	const HOT_LIST_LEN=10 //热门歌手数组长度
 
 	export default {

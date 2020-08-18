@@ -98,7 +98,9 @@
 					})
 					info.songlist=info.songlist.concat(this.list.splice(0,SONGLIST_LEN))
 					this.toplistInfo=Object.assign({},info)
+					console.log(this.toplistInfo.songlist)
 				})
+
 			},
 			loadMore(event){
 				let length=this.toplistInfo.songlist.length;
@@ -159,7 +161,7 @@
 		width: 100%;
 		height: 100%;
 		/*css3的新属性*/
-		object-fit: cover; 
+		object-fit: cover;
 		filter: blur(36px);
 		transform: scale(1.1);
 	}
@@ -209,7 +211,7 @@
 		margin: 20px 30px;
 		color: #333;
 	}
-	
+
 	.loading-more{
 		text-align: center;
 	}
@@ -221,7 +223,7 @@
 		background-color: #fff;
 	}
 	.arrow{
-		display: inline-block;	
+		display: inline-block;
 		width: 6px;
 		height: 6px;
 		margin-left: 10px;

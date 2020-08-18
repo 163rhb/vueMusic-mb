@@ -28,9 +28,11 @@ export default new Vuex.Store({
       let Song = {
         ...state.playlist[state.currentIndex]
       } || {}
+         /* console.log(...state.playlist)*/
       if (Song.mid) {
-        
-        Song.url = `https://v1.itooi.cn/tencent/url?id=${Song.mid}&quality=128`
+       /* Song.url = `https://v1.itooi.cn/tencent/url?id=${Song.mid}&quality=128`*/
+        console.log(Song)
+          Song.url=`https://api.itooi.cn/tencent/url?id=${Song.mid}&quality=flac`
       }
       return Song || {}
     }

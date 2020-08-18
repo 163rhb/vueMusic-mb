@@ -108,6 +108,7 @@
 					this.singer=data.singer_name
 					//获取歌曲列表
 					data.list.forEach((item)=>{
+						console.log(item)
 						this.songlist.push(createSong(item.musicData))
 					})
 					//获取专辑列表
@@ -209,7 +210,7 @@
 		background-color: #fff;
 		margin-bottom: 80px;
 	}
-	
+
 	.fiexd-top{
 		position: fixed;
 		z-index: 40;

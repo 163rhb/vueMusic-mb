@@ -3,13 +3,11 @@
     <div class="slider">
       <mt-swipe>
         <mt-swipe-item v-for="(item,index) in slider" :key="index">
-          <a :href="item.linkUrl">
-            <img :src="item.picUrl">
-          </a>
+            <img :src="item.pic_info.url">
         </mt-swipe-item>
       </mt-swipe>
     </div>
-    <div class="radio-list">
+    <!--<div class="radio-list">
       <h2 class="title">电台</h2>
       <ul>
         <li v-for="(item,index) in radioList" :key="index">
@@ -22,18 +20,18 @@
           </div>
         </li>
       </ul>
-    </div>
+    </div>-->
     <div class="song-list">
       <h2 class="title">热门歌单</h2>
       <ul>
         <li v-for="(item,index) in songList" :key="index">
-          <router-link :to="`/toplists/toplist/${item.id}`">
+          <router-link :to="`/songsheet/id=${item.dissid}`">
             <div class="media-img">
-              <img v-lazy="item.picUrl">
+              <img v-lazy="item.imgurl">
               <i class="play"></i>
             </div>
             <div class="media-text">
-              <p>{{item.topTitle}}</p>
+              <p>{{item.dissname}}</p>
             </div>
           </router-link>
         </li>
@@ -64,25 +62,44 @@ export default {
   created() {
     this._getRecommendData();
   },
+  mounted(){
+
+
+  },
   methods: {
     ...mapActions(["selectPlay"]),
     ...mapMutations(["setPlaylist", "setPlayingState", "setCurrentIndex"]),
 
     _getRecommendData() {
-      getRecommendData().then(res => {
+      /*getRecommendData().then(res => {
+        console.log(res)
         let data = res.data;
         this.slider = data.slider;
-        this.radioList = data.radioList;
-      });
+        this.radioList = data.radioList;*/
+     this.getRequest('https://api.itooi.cn/tencent/banner').then(resp=>{
+       /*console.log(resp)*/
+       this.slider=resp.data.data
+      /* console.log(this.slider)*/
+     })
+
       getToplist(26).then(res => {
         for (let i = 0; i < 30; i++) {
           this.radioSongs.push(createSong(res.songlist[i].data));
         }
       });
-      getToplistsData().then(res => {
-        console.log(res);
-        this.songList = res.data.topList;
-      });
+      // getToplistsData().then(res => {
+      //   console.log(res);
+      //   this.songList = res.data.topList;
+      // });
+
+        this.getRequest('https://api.itooi.cn/tencent/songList/hot').then(resp=>{
+         /* let songlist=JSON.stringify(resp)*/
+          /*console.log("热门歌单"+songlist)*/
+          console.log(resp.data.data.list)
+          this.songList = resp.data.data.list
+        })
+
+
     },
     selectRadio(index) {
       //歌单数据被腾讯限制，用toplist数据模拟

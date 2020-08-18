@@ -1,7 +1,7 @@
 import jsonp from '@/assets/js/jsonp.js'
 
 export function getRecommendData(){
-	const url="https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg";
+	/*const url="https://api.itooi.cn/tencent/banner";
 	let data={
 		format: "json",
 		inCharset: "utf-8",
@@ -10,7 +10,8 @@ export function getRecommendData(){
 		platform: "h5",
 		needNewCode: 1,
 	}
-	return jsonp(url,data,{param:"jsonpCallback"})
+	return jsonp(url,data,{param:"jsonpCallback"})*/
+
 }
 
 export function getHotSongSheet(id){

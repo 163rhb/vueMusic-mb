@@ -69,7 +69,7 @@
 		        if (newSong.id === oldSong.id) {
 					return
 		        }
-		       
+
 	      	}
 		},
 		methods:{
@@ -87,7 +87,7 @@
 				// this.scrollToCurrent()
 			},
 			hide() {
-				this.showFlag = false 
+				this.showFlag = false
 			},
 			clear() {
 				MessageBox.confirm('确定清空播放列表吗？').then(()=>{
@@ -163,7 +163,6 @@
 				this.setCurrentIndex(index)
 				this.setPlayingState(true)
 			}
-			
 		}
 	}
 </script>

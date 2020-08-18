@@ -1,7 +1,7 @@
 import jsonp from '@/assets/js/jsonp'
 
 export function getHotKey(){
-	const url = 'https://c.y.qq.com/splcloud/fcgi-bin/gethotkey.fcg'
+	const url = 'c'
 	const data = {
 		uin: 0,
 		format: 'jsonp',

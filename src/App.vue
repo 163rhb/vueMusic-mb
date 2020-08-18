@@ -1,12 +1,11 @@
 <template>
   <div id="app">
-    
+
     <Index-Head/>
     <transition name="fade" mode="out-in">
        <router-view/>
     </transition>
     <player/>
-    
   </div>
 </template>
 

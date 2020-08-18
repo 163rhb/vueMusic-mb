@@ -6,19 +6,19 @@
 					<page-header title="热门歌单"></page-header>
 					<div class="sheet-info">
 						<div class="media-img">
-							<img :src="info.img">
+							<img :src="songListData.logo">
 						</div>
 						<div class="media-text">
-							<h2>{{info.title}}</h2>
+							<h2>{{songListData.dissname}}</h2>
 							<div>
-								<img :src="info.headimg">
-								{{info.nickname}}
+								<img :src="songListData.headurl">
+								{{songListData.nickname}}
 							</div>
-							<p>播放量：{{info.visitnum}}</p>
+							<p>播放量：{{songListData.visitnum}}</p>
 						</div>
 					</div>
 				</div>
-				<img class="sheet-box-bg" :src="info.img">
+				<img class="sheet-box-bg" :src="songListData.logo">
 			</div>
 			<div class="navbar">
 				<mt-navbar v-model="selected">
@@ -30,19 +30,22 @@
 				<mt-tab-container v-model="selected">
 					<mt-tab-container-item id="songlist">
 						<ul>
-							<div class="loading-container" v-if="!info.songlist.length">
+							<div class="loading-container" v-if="!songListData.songlist">
 								<loading></loading>
 							</div>
-							<li v-for="(item,index) in info.songlist" :key="index" class="song" @click="message">
-								<h3>{{item.songname}}</h3>
-								<p>{{item.singername+'·'+item.albumname}}</p>
+							<li v-for="(item,index) in songListData.songlist" :key="index" class="song" @click="selectItem(index)">
+							<!--	<div class="ranking" v-if="isShowIndex">
+									<span :class="{'playing-item':isplaying(index)}">{{index+1}}</span>
+								</div>-->
+								<h3>{{item.name}}</h3>
+								<p>{{item.singer[0].name+'·'+item.album.name}}</p>
 							</li>
 						</ul>
 					</mt-tab-container-item>
 					<mt-tab-container-item id="description">
 						<div class="description">
 							<h2>歌单简介</h2>
-							<p v-html="info.desc"></p>
+							<p v-html="songListData.desc"></p>
 						</div>
 					</mt-tab-container-item>
 				</mt-tab-container>
@@ -55,42 +58,115 @@
 	import Loading from '@/components/Loading'
 	import SongList from '@/components/SongList'
 	import { getHotSongSheet } from '@/api/getRecommendData'
+	import { mapActions, mapGetters } from 'vuex'
 	import axios from 'axios'
 	import { MessageBox } from 'mint-ui';
+	import Song, { createSong } from "../assets/js/song";
 
 	export default{
 		components:{
 			PageHeader,
 			Loading,
-			SongList
+			SongList,
+		},
+		computed: {
+		/*	...mapGetters([
+				'currentSong'
+			]),*/
 		},
 		data(){
 			return {
 				selected:'songlist',
-				info:{
-					songlist:[]
-				}
+				songListData:{},
+				newSong:{
+					id:0,
+					mid: 0,
+					singername:null ,
+					songname: null,
+					albumname:0 ,
+					duration:0,
+					img: null,
+					url: null,
+				},
+				newSongList:[],
+			}
+		},
+		props:{
+			isShowIndex:{
+				type:Boolean,
+				default:false
 			}
 		},
 		created(){
 			this._getHotSongSheet();
 		},
 		methods:{
+			...mapActions([
+				'selectPlay'
+			]),
+			/*isplaying(index) {
+				if (this.currentSong.id===this.songListData.songlist[index].id) {
+					return true
+				}
+			},*/
+			selectItem(index) {
+				/*console.log(this.songListData.songlist)*/
+				console.log(this.newSongList);
+				let list = this.newSongList.slice()
+				this.selectPlay({
+					list,
+					index
+				})
+			},
+
 			_getHotSongSheet(){
-				let id=this.$route.query.id;
-			
+				let id=this.$route.params.id
+			/*
 				axios.get('https://v1.itooi.cn/tencent/songList/category').then((res)=>{
 						console.log(res)
 					this.info = Object.assign({},res.data[id])
+				})*/
+			const url=`https://api.itooi.cn/tencent/songList?${id}`
+				/*console.log(url)*/
+			this.getRequest(url).then(resp=>{
+			/*	console.log(resp)*/
+				let data=resp.data.data
+				/*console.log(data)*/
+				this.songListData=data[0]
+				console.log(this.songListData.songlist)
+				this.songListData.songlist.forEach((item)=>{
+					console.log(item)
+				this.newSong.singername=item.singer[0].name
+					this.newSong.songname=item.name
+					this.newSong.img=`https://api.itooi.cn/tencent/pic?id=${item.mid}`
+					this.newSong.url=`https://api.itooi.cn/tencent/url?id=${item.mid}&quality=flac`
+					this.newSong.mid=item.mid
+					this.newSong.id=item.id
+					this.newSong.albumname=item.album.name
+					this.newSong.duration=item.interval
+					let newSong1={}
+					Object.assign(newSong1,this.newSong)
+					/*console.log(newSong1)*/
+					this.newSongList.push(newSong1)
+					/*this.newSongList.push(this.newSong)*/
 				})
+				console.log(this.newSongList)
+			})
 			},
 			message() {
 				MessageBox.confirm('推荐歌单数据需要接口验证').then(()=>{},()=>{})
-			}
+			},
+
 		}
 	}
 </script>
 <style scoped>
+	.ranking{
+		height: 80%;
+		margin-right: 20px;
+		font-size: 16px;
+		color: #777
+	}
 	.loading-container{
 		margin: 150px 0;
 	}
@@ -140,7 +216,7 @@
 		width: 100%;
 		height: 100%;
 		/*css3的新属性*/
-		object-fit: cover; 
+		object-fit: cover;
 		filter: blur(36px);
 		transform: scale(1.1);
 	}

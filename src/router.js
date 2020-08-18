@@ -12,13 +12,12 @@ export default new Router({
     {
       path: '/index',
       name: 'index',
-      component: () => import('./views/Home.vue'),
-      children:[
-        {
-          path:"/index/songsheet",
-          component: () => import('./views/HotSongSheet.vue')
-        }
-      ]
+      component: () => import('./views/Homel.vue'),
+    },
+    {
+      path: '/songsheet/:id',
+      name: 'songsheet',
+      component: () => import('./views/HotSongSheet.vue')
     },
     {
       path:'/singerlist',
